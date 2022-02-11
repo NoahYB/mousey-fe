@@ -82,7 +82,7 @@ let charge = document.getElementById("charge");
 let canvas = document.getElementsByTagName("canvas")[0];
 counter.textContent="0";
 counter.style.color='salmon';
-let chargeSpeed = 3/20;
+let chargeSpeed = 8/20;
 
 function update() {
     characterInput();
