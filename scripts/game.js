@@ -212,6 +212,7 @@ function addProjectile(proj) {
     Composite.add(engine.world, bullet,{ isStatic: true });
     Body.applyForce(bullet,bullet.position,proj.force);
     bullet[id] = false;
+    projectiles.push(bullet);
 }
 
 function setKey(e) {
