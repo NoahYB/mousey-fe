@@ -125,14 +125,14 @@ function counterHandle() {
 }
 function collisionHandle() {
     entities.map((ground) => {
-        if(Matter.SAT.collides(player, ground).collided){
+        if(Matter.SAT.collides(player, ground).collided) {
             grounded = true;
             canDoubleJump = true;
         } else grounded = false;
     });
     for (let i = 0; i < projectiles.length; i++) {
         const projectile = projectiles[i];
-        if(Matter.SAT.collides(player, projectile).collided){
+        if(Matter.SAT.collides(player, projectile).collided) {
             grounded = true;
             canDoubleJump = true;
         } else grounded = false;
@@ -146,6 +146,7 @@ function move(body) {
             force: playerVelo,
             id,}})
 }
+
 function characterInput() {
     if(grounded) moveSpeed = .0002 * 1.2;
     else moveSpeed = .00025;
@@ -177,6 +178,7 @@ function characterInput() {
         mouseDown = false;
     }
 }
+
 function fire() {
     mouseTimer = Math.min(5,Math.floor(mouseTimer));
     const projectilesToSend = [];
@@ -206,6 +208,7 @@ function fire() {
 
 function addProjectile(proj) {
     let bullet = Bodies.circle(proj.position.x, proj.position.y, 3);
+    bullet.time = 0;
     Composite.add(engine.world, bullet,{ isStatic: true });
     Body.applyForce(bullet,bullet.position,proj.force);
     bullet[id] = false;
@@ -218,12 +221,15 @@ function setKey(e) {
         }
     }
 }
+
 function releaseKey(e) {
     keymap[e.code] = false;
 }
+
 function pressKey(e) {
     keymap[e.code] = false;
 }
+
 function setMousePos(e) {
     let rect = canvas.getBoundingClientRect();
     mousePos = {

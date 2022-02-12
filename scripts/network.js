@@ -20,7 +20,7 @@ function parseProjectiles(projectilesIncoming) {
 
 webSocket.onmessage = function(message) {
     const data = JSON.parse(message.data);
-        const {projectiles, playerPosition, force, spawned} = data;
+    const {projectiles, playerPosition, force, spawned} = data;
     if (id === data.id) return;
     if(projectiles) parseProjectiles(projectiles);
     if(playerPosition) movePlayerAvatar(playerPosition, force, data.id, spawned);
