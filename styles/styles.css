@@ -1,35 +1,11 @@
-.header {
+.canvas-container {
     text-align: center;
 }
-.image-stay {
-    max-width: 220px;
-    height: 220px;
+h1 {
+    text-align: center;
+    color: white;
 }
-.card {
-    /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    margin: 5px;
-    width: 220px;
-    height: 320px;
-    transition: 0.3s;
-}
-  
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-/* Add some padding inside the card container */
-.container {
-    padding: 2px 16px;
-}
-
-.link-closet {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.holder {
-    flex-wrap: wrap;
-    flex-direction: row;
+p {
+    text-align: center;
+    color: white;
 }

@@ -17,25 +17,14 @@ var Engine = Matter.Engine,
 // create an engine
 var engine = Engine.create();
 
-// create a renderer
-var render = Render.create({
-    element: document.body,
-    engine: engine,
-    options: {
-        width,
-        height,
-    }
-});
-
+const renderableObjects = [];
 let entities = createMap(width, height);
+renderableObjects.push(...entities);
 let projectiles = [];
 let players = {};
 
 // add all of the bodies to the world
 Composite.add(engine.world, entities);
-
-// run the renderer
-Render.run(render);
 
 // create runner
 var runner = Runner.create();
@@ -58,6 +47,9 @@ let fireSpeed = .001;
 let player = Bodies.circle(200 * Math.random(),200 * Math.random(),10);
 player[id] = true;
 players[id] = player;
+player.bodyType = 'circle';
+player.label = 'friendly';
+renderableObjects.push(player);
 let grounded = false;
 let canDoubleJump = true;
 let mouseDown = false;
@@ -80,13 +72,17 @@ function waitToStart() {
 let counter = document.getElementById("counter");
 let charge = document.getElementById("charge");
 let canvas = document.getElementsByTagName("canvas")[0];
-counter.textContent="0";
+// counter.textContent="0";
 counter.style.color='salmon';
 let chargeSpeed = 8/20;
 
 function update() {
     characterInput();
     move(player);
+    clearCanvas();
+    renderFrame(projectiles, 'white');
+    renderFrame(entities);
+    renderFrame([player]);
     collisionHandle();
     counterHandle();
     chargeHandle();
@@ -98,30 +94,30 @@ function despawn() {
         return proj.time >= 300;
     })
     deProject.map((proj) => {
-        console.log(deProject);
         Composite.remove(engine.world, proj);
     })
     projectiles = projectiles.filter((proj) => {
         return proj.time < 300;
     })
 }
+
 function chargeHandle() {
-    let count = Math.min(5,mouseTimer);
-    charge.style.width = count * 30/5 + 'px';
-    charge.style.top = player.position.y + 90 + 'px';
-    charge.style.left = player.position.x + -10 + 'px';
-    charge.style.backgroundColor = 'rgb(' + count * 60 + ',50,50)'
+    // let count = Math.min(5,mouseTimer);
+    // charge.style.width = count * 30/5 + 'px';
+    // charge.style.top = player.position.y + 90 + 'px';
+    // charge.style.left = player.position.x  + 82.5 + 'px';
+    // charge.style.backgroundColor = 'rgb(' + count * 60 + ',50,50)'
 }
 function counterHandle() {
-    let count = Math.min(5,Math.floor(mouseTimer));
-    counter.textContent = count;
-    if(count >= 5) {
-        counter.style.color='red';
-    } else {
-        counter.style.color='salmon';
-    }
-    counter.style.top = player.position.y + 105 + 'px';
-    counter.style.left = player.position.x + 4 + 'px';
+    // let count = Math.min(5,Math.floor(mouseTimer));
+    // counter.textContent = count;
+    // if(count >= 5) {
+    //     counter.style.color='red';
+    // } else {
+    //     counter.style.color='black';
+    // }
+    // counter.style.top = player.position.y + 105 + 'px';
+    // counter.style.left = player.position.x + 92.5 + 'px';
 }
 function collisionHandle() {
     entities.map((ground) => {
@@ -182,6 +178,7 @@ function characterInput() {
 function fire() {
     mouseTimer = Math.min(5,Math.floor(mouseTimer));
     const projectilesToSend = [];
+    let playerForce = Vector.create(0,0);
     for(let i = 0; i < mouseTimer; i++) {
         let bullet = Bodies.circle(player.position.x,player.position.y,3);
         Composite.add(engine.world, bullet,{ isStatic: true })
@@ -191,9 +188,7 @@ function fire() {
         force.y *= fireSpeed;
         //force.y += -gravity.y * gravity.scale * body.mass;
         Body.applyForce(bullet,bullet.position,force);
-        const playerForce = (Vector.mult(force,-4));
-        playerVelo.x += playerForce.x;
-        playerVelo.y += playerForce.y
+        playerForce = Vector.add(Vector.mult(force,-4), playerForce);
         bullet[id] = true;
         projectilesToSend.push({
             position: bullet.position,
@@ -201,7 +196,14 @@ function fire() {
         });
         bullet.time = 0;
         projectiles.push(bullet);
+        bullet.label = 'other';
+        bullet.bodyType = 'circle';
+        bullet.collisionFilter = {
+            'group': -1,
+        };
     }
+    playerVelo.x += playerForce.x;
+    playerVelo.y += playerForce.y;
     sendMessage({data: {projectiles: projectilesToSend}});
     mouseTimer = 0;
 }
@@ -213,6 +215,8 @@ function addProjectile(proj) {
     Body.applyForce(bullet,bullet.position,proj.force);
     bullet[id] = false;
     projectiles.push(bullet);
+    bullet.label = 'other';
+    bullet.bodyType = 'circle';
 }
 
 function setKey(e) {
