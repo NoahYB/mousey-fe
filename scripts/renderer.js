@@ -15,6 +15,7 @@ const colorMap = {
 function renderFrame(bodies, stroke) {
     ctx.beginPath();
     for (let i = 0; i < bodies.length; i++) {
+        if (bodies[i] === undefined) continue;
         shapeMap[bodies[i].bodyType]
             (bodies[i], colorMap[bodies[i].label], stroke);
     }

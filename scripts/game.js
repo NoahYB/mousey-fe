@@ -2,6 +2,7 @@ var width = 1000;
 var height = 700;
 if (localStorage.getItem('id')) {
     var id = localStorage.getItem('id');
+    console.log(id);
 } else {
     var id = Date.now();
     localStorage.setItem('id', id);
@@ -182,7 +183,10 @@ function movePlayerAvatar(pos, force, enemyID, spawned) {
         players[enemyID].position = pos;
         Body.applyForce(players[enemyID],pos, force);
     } else {
-        if (spawned) Composite.remove(engine.world, players[enemyID]);
+        if (spawned) {
+            avatars[enemy.renderIndex] = undefined;
+            Composite.remove(engine.world, players[enemyID]);
+        }
         players[enemyID] = createPlayerAvatar(pos, spawned);
         Body.applyForce(players[enemyID],players[enemyID].position, force);
     }
@@ -195,5 +199,6 @@ function createPlayerAvatar(pos, spawned) {
     enemy.bodyType = 'circle';
     enemy.label = 'enemy';
     avatars.push(enemy);
+    enemy.renderIndex = avatars.length - 1;
     return enemy;
 }
