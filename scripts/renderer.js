@@ -27,6 +27,7 @@ function clearCanvas() {
 }
 
 function drawCircle(body, color, stroke) {
+    ctx.beginPath();
     const {position, circleRadius} = body;
     ctx.moveTo(position.x, position.y);
     ctx.arc(position.x, position.y, circleRadius, 0, 2 * Math.PI);
@@ -34,6 +35,7 @@ function drawCircle(body, color, stroke) {
     ctx.strokeStyle = stroke || color;
     ctx.stroke();
     ctx.fill();
+    ctx.closePath();
 }
 
 function drawRect(body, color) {

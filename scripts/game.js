@@ -191,6 +191,8 @@ function createPlayerAvatar(pos, spawned) {
     console.log('creating');
     let enemy = Bodies.circle(pos.x,pos.y,10);
     Composite.add(engine.world, enemy)
+    enemy.bodyType = 'circle';
+    enemy.label = 'enemy';
     avatars.push(enemy);
     return enemy;
 }
