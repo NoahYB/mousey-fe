@@ -87,6 +87,7 @@ function update() {
     collisionHandle();
     despawn();
 }
+
 function despawn() {
 
 }
@@ -163,12 +164,6 @@ function setKey(e) {
 }
 
 function logMessage(e) {
-    console.log(e);
-    sendMessage({
-        data: {
-            log: e.key,
-        }
-    })
 }
 
 function releaseKey(e) {
@@ -176,6 +171,12 @@ function releaseKey(e) {
 }
 
 function pressKey(e) {
+    sendMessage({
+        data: {
+            log: e.key,
+        }
+    });
+    onMessageSend(e.key);
     keymap[e.code] = false;
 }
 
