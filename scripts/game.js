@@ -20,7 +20,7 @@ var engine = Engine.create();
 const renderableObjects = [];
 let entities = createMap(width, height);
 renderableObjects.push(...entities);
-let projectiles = [];
+let avatars = [];
 let players = {};
 
 // add all of the bodies to the world
@@ -47,6 +47,7 @@ let fireSpeed = .001;
 let player = Bodies.circle(200 * Math.random(),200 * Math.random(),10);
 player[id] = true;
 players[id] = player;
+avatars.push(player);
 player.bodyType = 'circle';
 player.label = 'friendly';
 renderableObjects.push(player);
@@ -80,45 +81,15 @@ function update() {
     characterInput();
     move(player);
     clearCanvas();
-    renderFrame(projectiles, 'white');
     renderFrame(entities);
-    renderFrame([player]);
+    renderFrame(avatars);
     collisionHandle();
-    counterHandle();
-    chargeHandle();
     despawn();
 }
 function despawn() {
-    const deProject = projectiles.filter((proj) => {
-        proj.time += 1;
-        return proj.time >= 300;
-    })
-    deProject.map((proj) => {
-        Composite.remove(engine.world, proj);
-    })
-    projectiles = projectiles.filter((proj) => {
-        return proj.time < 300;
-    })
+
 }
 
-function chargeHandle() {
-    // let count = Math.min(5,mouseTimer);
-    // charge.style.width = count * 30/5 + 'px';
-    // charge.style.top = player.position.y + 90 + 'px';
-    // charge.style.left = player.position.x  + 82.5 + 'px';
-    // charge.style.backgroundColor = 'rgb(' + count * 60 + ',50,50)'
-}
-function counterHandle() {
-    // let count = Math.min(5,Math.floor(mouseTimer));
-    // counter.textContent = count;
-    // if(count >= 5) {
-    //     counter.style.color='red';
-    // } else {
-    //     counter.style.color='black';
-    // }
-    // counter.style.top = player.position.y + 105 + 'px';
-    // counter.style.left = player.position.x + 92.5 + 'px';
-}
 function collisionHandle() {
     entities.map((ground) => {
         if(Matter.SAT.collides(player, ground).collided) {
@@ -126,13 +97,6 @@ function collisionHandle() {
             canDoubleJump = true;
         } else grounded = false;
     });
-    for (let i = 0; i < projectiles.length; i++) {
-        const projectile = projectiles[i];
-        if(Matter.SAT.collides(player, projectile).collided) {
-            grounded = true;
-            canDoubleJump = true;
-        } else grounded = false;
-    }
 }
 
 function move(body) {
@@ -177,46 +141,15 @@ function characterInput() {
 
 function fire() {
     mouseTimer = Math.min(5,Math.floor(mouseTimer));
-    const projectilesToSend = [];
     let playerForce = Vector.create(0,0);
-    for(let i = 0; i < mouseTimer; i++) {
-        let bullet = Bodies.circle(player.position.x,player.position.y,3);
-        Composite.add(engine.world, bullet,{ isStatic: true })
-        let force = Vector.sub(mousePos,player.position);
-        force = Vector.normalise(force);
-        force.x *= fireSpeed;
-        force.y *= fireSpeed;
-        //force.y += -gravity.y * gravity.scale * body.mass;
-        Body.applyForce(bullet,bullet.position,force);
-        playerForce = Vector.add(Vector.mult(force,-4), playerForce);
-        bullet[id] = true;
-        projectilesToSend.push({
-            position: bullet.position,
-            force: force,
-        });
-        bullet.time = 0;
-        projectiles.push(bullet);
-        bullet.label = 'other';
-        bullet.bodyType = 'circle';
-        bullet.collisionFilter = {
-            'group': -1,
-        };
-    }
+    let force = Vector.sub(mousePos,player.position);
+    force = Vector.normalise(force);
+    force.x *= fireSpeed;
+    force.y *= fireSpeed;
+    playerForce = Vector.add(Vector.mult(force,-4 * mouseTimer), playerForce);
     playerVelo.x += playerForce.x;
     playerVelo.y += playerForce.y;
-    sendMessage({data: {projectiles: projectilesToSend}});
     mouseTimer = 0;
-}
-
-function addProjectile(proj) {
-    let bullet = Bodies.circle(proj.position.x, proj.position.y, 3);
-    bullet.time = 0;
-    Composite.add(engine.world, bullet,{ isStatic: true });
-    Body.applyForce(bullet,bullet.position,proj.force);
-    bullet[id] = false;
-    projectiles.push(bullet);
-    bullet.label = 'other';
-    bullet.bodyType = 'circle';
 }
 
 function setKey(e) {
@@ -258,5 +191,6 @@ function createPlayerAvatar(pos, spawned) {
     console.log('creating');
     let enemy = Bodies.circle(pos.x,pos.y,10);
     Composite.add(engine.world, enemy)
+    avatars.push(enemy);
     return enemy;
 }
