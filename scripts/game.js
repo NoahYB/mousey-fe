@@ -159,6 +159,16 @@ function setKey(e) {
             keymap[key] = true;
         }
     }
+    logMessage(e);
+}
+
+function logMessage(e) {
+    console.log(e);
+    sendMessage({
+        data: {
+            log: e.key,
+        }
+    })
 }
 
 function releaseKey(e) {

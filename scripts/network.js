@@ -16,8 +16,12 @@ function createMessage(message) {
 
 webSocket.onmessage = function(message) {
     const data = JSON.parse(message.data);
-    const {projectiles, playerPosition, force, spawned} = data;
+    const {projectiles, log, playerPosition, force, spawned} = data;
     if (id === data.id) return;
+    if (data.log) {
+        onMessageReceive(data.log);
+        return;
+    }
     if(playerPosition) movePlayerAvatar(playerPosition, force, data.id, spawned);
 }
 
