@@ -56,7 +56,7 @@ let canDoubleJump = true;
 let mouseDown = false;
 let mouseReleased = false;
 let mouseTimer = 0;
-const epsilon = 1;
+const epsilon = -20;
 Composite.add(engine.world, player);
 const delay = ms => new Promise(res => setTimeout(res, ms));
 function waitToStart() {
@@ -179,16 +179,8 @@ function setMousePos(e) {
 
 function movePlayerAvatar(pos, force, enemyID, spawned) {
     if (players[enemyID] && !spawned) {
-        console.log(players[enemyID].position);
-        console.log(pos);
-        console.log (Vector.distanceSquared(players[enemyID].position, pos));
-        if (Vector.distanceSquared(players[enemyID].position, pos) > epsilon) {
-            console.log('fixing location');
-            players[enemyID].position = pos;
-        } else {
-            console.log('predicting location');
-            Body.applyForce(players[enemyID],pos, force);
-        }
+        players[enemyID].position = pos;
+        Body.applyForce(players[enemyID],pos, force);
     } else {
         if (spawned) Composite.remove(engine.world, players[enemyID]);
         players[enemyID] = createPlayerAvatar(pos, spawned);
