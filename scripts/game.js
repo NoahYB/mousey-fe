@@ -19,7 +19,7 @@ var Engine = Matter.Engine,
 var engine = Engine.create();
 
 const renderableObjects = [];
-let entities = createRandomMap(width, height);
+let entities = createMap(width, height);
 renderableObjects.push(...entities);
 let avatars = [];
 let players = {};
