@@ -8,7 +8,7 @@ const shapeMap = {
 const colorMap = {
     'friendly' : '#EF7B45',
     'enemy' : 'red',
-    'structure': '#5EB1BF',
+    'structure': '#691236',
     'other': '#D84727'
 }
 
@@ -40,6 +40,7 @@ function drawCircle(body, color, stroke) {
 }
 
 function drawRect(body, color) {
+    ctx.beginPath();
     const {vertices} = body;
     const x1 = vertices[0].x;
     const y1 = vertices[0].y;
@@ -47,8 +48,7 @@ function drawRect(body, color) {
     const y2 = vertices[2].y;
     ctx.moveTo(x1, y1);
     ctx.rect(x1, y1, x2-x1, y2-y1);
-    ctx.fillStyle = color;
-    ctx.strokeStyle = color;
+    ctx.fillStyle = body.color || '#691236';
     ctx.fill();
-    ctx.stroke();
+    ctx.closePath();
 }
