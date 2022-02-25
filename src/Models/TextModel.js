@@ -1,4 +1,4 @@
-import {TextRenderer} from '../../Views/RenderViews/RenderText.js'
+import {TextRenderer} from '../Views/RenderViews/RenderText.js'
 export class TextModel {
 	constructor(id) {
 		this.textRenderer = new TextRenderer();
