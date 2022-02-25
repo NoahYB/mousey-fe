@@ -6,7 +6,7 @@ import {
 	InputConductor
 } from './Conductors/InputConductor.js'
 
-import {TextModel} from '../../Models/TextModel.js'
+import {TextModel} from '../Models/TextModel.js'
 
 function main() {
 	console.log('loading');
