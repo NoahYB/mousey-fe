@@ -7,6 +7,7 @@ import {
 
 export class WebSocketConductor {
     constructor(id, connectionDisplayName, textModel) {
+        console.log('register git change');
         this.webSocket = new WebSocket(
             'wss://brintonliteraryagency.org/wss/', 
             'protocolOne'
