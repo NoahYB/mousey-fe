@@ -9,7 +9,6 @@ export class TextModel {
 	}
 
 	deleteDisplayText(data) {
-		console.log(this.idToTextMap);
 		this.idToTextMap[data.id] = this.idToTextMap[data.id].slice(0, -1);
 		this.domManipulation.displayText(
 			data.id,
@@ -26,7 +25,6 @@ export class TextModel {
 
 	updateText(data) {
 		this.setOrUpdateTextMap(data);
-		console.log(this.idToTextMap);
 		const textToDisplay = 
 			this.idToTextMap[data.id];
 		this.domManipulation.displayText(
