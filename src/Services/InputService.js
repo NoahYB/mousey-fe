@@ -15,7 +15,7 @@ export class InputService {
     }
 
     intializeCallbacks() {
-        document.onkeypress = (event) => {
+        document.onkeydown = (event) => {
             const data =
                 validateKeyboardEvent(event);
             this.keyboardInputController
