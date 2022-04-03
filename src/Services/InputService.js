@@ -5,7 +5,7 @@ import {
     validateKeyboardEvent 
 } from '../Validators/InputValidators.js'
 
-export class InputConductor {
+export class InputService {
     constructor(id, textModel) {
         this.id = id;
         this.textModel = textModel;

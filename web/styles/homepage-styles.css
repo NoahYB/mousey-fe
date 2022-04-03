@@ -1,0 +1,22 @@
+.canvas-container {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+}
+
+p {
+    text-align: center;
+    color: white;
+}
+
+body {background-color: rgb(0, 0, 0);}
+
+.center {
+    color: grey;
+    text-align: center;
+}
+
+div {color:white}

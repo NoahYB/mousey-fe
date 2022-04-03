@@ -7,7 +7,7 @@ export class KeyboardInputController {
 		const {data, id} = message;
 		this.textModel.updateText({
 			text: data.char,
-			connectionDisplayName: 'emily',
+			connectionDisplayName: window.localStorage.getItem('name'),
 			id,
 		});
 	}

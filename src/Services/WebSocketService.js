@@ -5,7 +5,7 @@ import {
     SendMessageController
 } from '../Controllers/WebSocketControllers/SendMessageController.js';
 
-export class WebSocketConductor {
+export class WebSocketService {
     constructor(id, connectionDisplayName, textModel) {
         console.log('register git change');
         this.webSocket = new WebSocket(
@@ -42,7 +42,6 @@ export class WebSocketConductor {
 
         this.webSocket.onmessage = (message) => {
             const data = JSON.parse(message.data);
-            console.log(data);
             if (data.id === this.id) return;
             if (data.text) {
                 this.receiveMessageController

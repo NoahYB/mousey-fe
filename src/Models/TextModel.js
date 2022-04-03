@@ -1,7 +1,7 @@
-import {TextRenderer} from '../Views/RenderViews/RenderText.js'
+import {DocumentService} from '../Services/DocumentService.js'
 export class TextModel {
 	constructor(id) {
-		this.textRenderer = new TextRenderer();
+		this.domManipulation = new DocumentService();
 		this.idToTextMap = {};
 		this.id = id;
 	}
@@ -10,11 +10,11 @@ export class TextModel {
 		this.setOrUpdateTextMap(data);
 		const textToDisplay = 
 			this.idToTextMap[data.id];
-		this.textRenderer.displayText(
+		this.domManipulation.displayText(
 			data.id,
 			`${data.connectionDisplayName} says: ${textToDisplay}`,
 		);
-		this.webSocketConductor.sendMessage(
+		this.webSocketService.sendMessage(
 			{
 				id: data.id,
 				text: textToDisplay,
@@ -25,7 +25,7 @@ export class TextModel {
 
 	updateReceivedText(data) {
 		this.idToTextMap[data.id] = data.text;
-		this.textRenderer.displayText(
+		this.domManipulation.displayText(
 			data.id,
 			`${data.connectionDisplayName} says: ${this.idToTextMap[data.id]}`,
 		);
@@ -42,7 +42,7 @@ export class TextModel {
 		}
 	}
 
-	setWebSocketConductor(wsc) {
-		this.webSocketConductor = wsc;
+	setWebSocketService(wsc) {
+		this.webSocketService = wsc;
 	}
 }
