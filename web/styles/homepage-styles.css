@@ -21,7 +21,6 @@ body {background-color: rgb(0, 0, 0);}
 
 .message-text {
     color: rgb(207, 207, 207);
-    position: absolute;
     animation: move linear .5s;
 }
 
