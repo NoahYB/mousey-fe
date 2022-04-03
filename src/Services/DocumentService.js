@@ -15,6 +15,7 @@ export class DocumentService {
     createNewElement(elementId) {
         const newElement = 
             document.createElement('div');
+        newElement.classList.add('message-text')
         newElement.id = elementId;
         document.body.appendChild(newElement);
         return newElement;

@@ -7,7 +7,6 @@ import {
 
 export class WebSocketService {
     constructor(id, connectionDisplayName, textModel) {
-        console.log('register git change');
         this.webSocket = new WebSocket(
             'wss://brintonliteraryagency.org/wss/', 
             'protocolOne'
@@ -32,7 +31,6 @@ export class WebSocketService {
 
     intializeCallbacks() {
         this.webSocket.onopen = (message) => {
-            console.log('opening');
             this.ready = true;
             this.sendMessageController.sendMessage({
                 id: this.id,
